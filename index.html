@@ -1,14 +1,135 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
 </head>
+
 <body>
-    
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <form>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <input type="text" id="city-search" class="form-control" placeholder="City">
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" id="city-submit" class="btn btn-primary mb-2">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src=".../100px180/" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">My Cities</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Search Result</th>
+                                    <th scope="col">Save</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Thornton</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>this to do</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">4</th>
+                                    <td>Thornton</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">5</th>
+                                    <td>Jacob</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">6</th>
+                                    <td>this to do</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">7</th>
+                                    <td>Thornton</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">8</th>
+                                    <td>Jacob</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">9</th>
+                                    <td>this to do</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">10</th>
+                                    <td>Thornton</td>
+                                    <td>
+                                        <button class="btn btn-outline-secondary" type="button">&#x2714;</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- End div class="row" -->
+        </div>
+        <!-- End Container -->
+    </div>
+
+
+    <!-- BootstrapCDN -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+    <!-- Requierment for Yelp API -->
+    <script src="https://storage.googleapis.com/code-snippets/rapidapi.min.js"></script>
+    <script src="main.js"></script>
 </body>
+
 </html>
