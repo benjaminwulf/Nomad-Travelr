@@ -10,6 +10,7 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 var map, infoWindow;
+var cityName = [];
 
 //INTIAL MAP FUNCTION
 function initMap() {
@@ -25,21 +26,41 @@ function initMap() {
   document.getElementById('submit').addEventListener('click', function () {
     geocodeAddress(geocoder, map);
   });
-  //INITIAL LOADING OF CITY NAMES WHEN PAGE IS REFRESHED
-  database.ref().on("child_added", function (childSnapshot) {
-    var cityName = (childSnapshot.val().cityName);
-    var lat = childSnapshot.val().lat;
-    var long = childSnapshot.val().long;
-    $('.favCities').append('<button class="favCityButton">' + cityName + '</button>');
-    var marker = new google.maps.Marker({
-      map: map,
-      position: {
-        lat: lat,
-        lng: long
-      }
-    })
+  // INITIAL LOADING OF CITY NAMES WHEN PAGE IS REFRESHED
+    database.ref().on("child_added", function (childSnapshot) {
+      cityName = (childSnapshot.val().cityName);
+      var lat = childSnapshot.val().lat;
+      var long = childSnapshot.val().long;
+
+// ========== BWW
+  // Dynamically generate button for each item in array cityName
+  var a = $("<button class='favCityButton'></button>");
+  // Add class
+  a.attr("city-name", cityName);
+  // Create button text with value of cityName at index i
+  a.text(cityName);
+  // Add buttons to div class '.favCities'
+  $('.favCities').append(a);
+  
+  // Attempt to get city-name on click
+  $('.favCityButton').each(function() {
+    $(this).on('click', function () {
+      console.log($(this).attr('city-name'));
+      })
   });
-}
+
+  // =========
+  
+      //  $('.favCities').append('<button class="favCityButton">' + cityName + '</button>');
+       var marker = new google.maps.Marker({
+         map: map,
+         position: {
+           lat: lat,
+           lng: long
+           }
+         })
+    });
+  }
 
 //FUNCTIONS THAT ADD A SEARCH BAR TO THE MAP AND GEOCODE BASED ON THE NAME INPUT - puts a marker when you add the place to "My Cities"
 
