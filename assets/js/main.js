@@ -10,6 +10,9 @@ firebase.initializeApp(config);
 
 var database = firebase.database();
 var map, infoWindow;
+var cityName = [];
+// Global variable for searching with Foursquare API
+var nearVenue = "";
 
 //INTIAL MAP FUNCTION
 function initMap() {
@@ -25,21 +28,48 @@ function initMap() {
   document.getElementById('submit').addEventListener('click', function () {
     geocodeAddress(geocoder, map);
   });
-  //INITIAL LOADING OF CITY NAMES WHEN PAGE IS REFRESHED
-  database.ref().on("child_added", function (childSnapshot) {
-    var cityName = (childSnapshot.val().cityName);
-    var lat = childSnapshot.val().lat;
-    var long = childSnapshot.val().long;
-    $('.favCities').append('<button class="favCityButton">' + cityName + '</button>');
-    var marker = new google.maps.Marker({
-      map: map,
-      position: {
-        lat: lat,
-        lng: long
-      }
-    })
+  // INITIAL LOADING OF CITY NAMES WHEN PAGE IS REFRESHED
+    database.ref().on("child_added", function (childSnapshot) {
+      cityName = (childSnapshot.val().cityName);
+      var lat = childSnapshot.val().lat;
+      var long = childSnapshot.val().long;
+
+// =======================
+//BWW
+  // Dynamically generate button for each item in array cityName
+  var a = $("<button class='favCityButton'></button>");
+  // Add class
+  a.attr("city-name", cityName);
+  // Create button text with value of cityName at index i
+  a.text(cityName);
+  // Add buttons to div class '.favCities'
+  $('.favCities').append(a);
+  
+  // Attempt to get city-name on click
+  $('.favCityButton').each(function() {
+    $(this).on('click', function () {
+      
+      // This global variable is to be passed Foursquare AJAX call
+      nearVenue = $(this).attr('city-name');
+      // BWW console log of on click event of city
+      venueOnClick(nearVenue);
+      console.log(nearVenue);
+      })
   });
-}
+
+      // BWW this I commented out as it it done above
+      //  $('.favCities').append('<button class="favCityButton">' + cityName + '</button>');
+  // ========================
+
+       var marker = new google.maps.Marker({
+         map: map,
+         position: {
+           lat: lat,
+           lng: long
+           }
+         })
+    });
+  }
 
 //FUNCTIONS THAT ADD A SEARCH BAR TO THE MAP AND GEOCODE BASED ON THE NAME INPUT - puts a marker when you add the place to "My Cities"
 
@@ -71,3 +101,31 @@ function geocodeAddress(geocoder, resultsMap) {
     }
   });
 }
+// =========================
+// BWW
+//==========================
+    // AJAX call for venue name limit 10
+    function venueOnClick(nearVenue) {
+    var queryURL = 'https://api.foursquare.com/v2/venues/search?near=' + nearVenue + '&limit=10&client_id=ITN3RTSLWS0EZ1NZ0NKWQBNJBUSE2F44N43VS5ZI0BYN0EHA&client_secret=1GDMIQM0YKKKWYAQH0WVTAYBLIJ3YXZJMDIAOHDVFXFJI4DC&v=20140806'
+     $.ajax({
+        url: queryURL,
+        method: 'GET'
+     }).then (function (data) {
+    console.log(data.response);
+    // Here we save the name 
+    var venues = data.response.venues;
+        $.each(venues, function(i,venue){
+            var queryName = venue.name;
+            // BWW this only return one venue ???
+            // $('.city-venues').html(queryName);
+            $('.city-venues').append(queryName);
+            console.log(queryName);
+            })
+        // Here we grab the id to display photo later
+        $.each(venues, function(i,venue){
+            var queryId = venue.id;
+            console.log(queryId);
+            })
+        });
+      };
+    //=====================================
