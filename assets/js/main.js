@@ -103,23 +103,54 @@ $(document).on('click', '.formSubmit', function (event) {
     // Here we save the name 
     var venues = data.response.venues;
     $.each(venues, function (i, venue) {
+      var newButtonsDiv = $('<div class=newVenueButtons>')
       var queryName = venue.name;
       var lat = venue.location.lat;
       var lng = venue.location.lng;
       var newVenueButton = $('<button class="venueButton">' + queryName + '</button>');
       newVenueButton.attr({
+        venueName: queryName,
         latitude: lat,
         longitude: lng
       });
-      $('.city-venues').append(newVenueButton);
+      var newAddButton = $('<button class="addButton">+Add</button>');
+      newAddButton.attr({
+        cityName: nearVenue,
+        venueName: queryName,
+        latitude: lat,
+        longitude: lng
+      });
+      var newUpVoteButton = $('<button class="upVoteButton"><i class="fas fa-thumbs-up"></i></button>');
+      newUpVoteButton.attr({
+        cityName: nearVenue,
+        venueName: queryName,
+        latitude: lat,
+        longitude: lng
+      });
+      newButtonsDiv.append(newVenueButton, newAddButton, newUpVoteButton);
+      $('.city-venues').append($(newButtonsDiv));
       console.log(queryName);
     });
   });
-  // Here we grab the id to display photo later
-  // $.each(venues, function (i, venue) {
-  //   var queryId = venue.id;
-  //   console.log(queryId);
-  // })
 });
 
-//=====================================
+$(document).on('click', '.addButton', function (event) {
+  event.preventDefault();
+  var addedCity = $(this).attr("cityName")
+  var addedVenueName = $(this).attr("venueName");
+  var addedVenueLat = $(this).attr("latitude");
+  var addedVenueLng = $(this).attr("longitude");
+  database.ref(addedCity + '/venues/' + addedVenueName).set({
+    venueName: addedVenueName,
+    venueLat: addedVenueLat,
+    venueLng: addedVenueLng
+  });
+  // database.ref(addedCity + '/venues').on("child_added", function (childSnapshot) {
+  //   var newAddedVenueDiv = $('<div>');
+  //   console.log(childSnapshot.val());
+  //   // newAddedVenueDiv.text(childSnapshot)
+  // });
+});
+
+
+
