@@ -20,3 +20,7 @@ h1 {
 .formInput {
   width: 300px;
 }
+
+.venueButton {
+  display: block;
+}

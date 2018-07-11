@@ -79,19 +79,20 @@ function geocodeAddress(geocoder, resultsMap) {
 // Attempt to get city-name on click
 $(document).on('click', '.favCityButton', function () {
   // This global variable is to be passed Foursquare AJAX call
+  $('.city-form').empty();
+  $('.city-venues').empty();
   nearVenue = $(this).val();
   newForm = $('<form>');
   newForm.append('<input class="formInput" type="text" value="What would you like to do here?">');
   newForm.append('<button class="formSubmit">Submit</button>')
-  $('.city-venues').append(newForm);
+  $('.city-form').append(newForm);
   return nearVenue;
 });
 
 $(document).on('click', '.formSubmit', function (event) {
   event.preventDefault();
-  console.log(nearVenue);
+  $('.city-venues').empty();
   var searchTerm = $('.formInput').val().trim();
-  console.log(searchTerm);
   // AJAX call for venue name limit 10
   var queryURL = 'https://api.foursquare.com/v2/venues/search?near=' + nearVenue + '&query=' + searchTerm + '&limit=10&client_id=ITN3RTSLWS0EZ1NZ0NKWQBNJBUSE2F44N43VS5ZI0BYN0EHA&client_secret=1GDMIQM0YKKKWYAQH0WVTAYBLIJ3YXZJMDIAOHDVFXFJI4DC&v=20140806'
   $.ajax({
@@ -103,7 +104,14 @@ $(document).on('click', '.formSubmit', function (event) {
     var venues = data.response.venues;
     $.each(venues, function (i, venue) {
       var queryName = venue.name;
-      $('.city-venues').append(queryName);
+      var lat = venue.location.lat;
+      var lng = venue.location.lng;
+      var newVenueButton = $('<button class="venueButton">' + queryName + '</button>');
+      newVenueButton.attr({
+        latitude: lat,
+        longitude: lng
+      });
+      $('.city-venues').append(newVenueButton);
       console.log(queryName);
     });
   });
