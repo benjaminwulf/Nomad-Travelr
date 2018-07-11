@@ -16,3 +16,7 @@ h1 {
 .favCityButton {
   display: block;
 }
+
+.formInput {
+  width: 300px;
+}
