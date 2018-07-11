@@ -29,47 +29,20 @@ function initMap() {
     geocodeAddress(geocoder, map);
   });
   // INITIAL LOADING OF CITY NAMES WHEN PAGE IS REFRESHED
-    database.ref().on("child_added", function (childSnapshot) {
-      cityName = (childSnapshot.val().cityName);
-      var lat = childSnapshot.val().lat;
-      var long = childSnapshot.val().long;
-
-// =======================
-//BWW
-  // Dynamically generate button for each item in array cityName
-  var a = $("<button class='favCityButton'></button>");
-  // Add class
-  a.attr("city-name", cityName);
-  // Create button text with value of cityName at index i
-  a.text(cityName);
-  // Add buttons to div class '.favCities'
-  $('.favCities').append(a);
-  
-  // Attempt to get city-name on click
-  $('.favCityButton').each(function() {
-    $(this).on('click', function () {
-      
-      // This global variable is to be passed Foursquare AJAX call
-      nearVenue = $(this).attr('city-name');
-      // BWW console log of on click event of city
-      venueOnClick(nearVenue);
-      console.log(nearVenue);
-      })
+  database.ref().on("child_added", function (childSnapshot) {
+    cityName = (childSnapshot.val().cityName);
+    var lat = childSnapshot.val().lat;
+    var long = childSnapshot.val().long;
+    $('.favCities').append('<button class="favCityButton" value="' + cityName + '">' + cityName + '</button>');
+    var marker = new google.maps.Marker({
+      map: map,
+      position: {
+        lat: lat,
+        lng: long
+      }
+    })
   });
-
-      // BWW this I commented out as it it done above
-      //  $('.favCities').append('<button class="favCityButton">' + cityName + '</button>');
-  // ========================
-
-       var marker = new google.maps.Marker({
-         map: map,
-         position: {
-           lat: lat,
-           lng: long
-           }
-         })
-    });
-  }
+}
 
 //FUNCTIONS THAT ADD A SEARCH BAR TO THE MAP AND GEOCODE BASED ON THE NAME INPUT - puts a marker when you add the place to "My Cities"
 
@@ -101,31 +74,44 @@ function geocodeAddress(geocoder, resultsMap) {
     }
   });
 }
-// =========================
-// BWW
-//==========================
-    // AJAX call for venue name limit 10
-    function venueOnClick(nearVenue) {
-    var queryURL = 'https://api.foursquare.com/v2/venues/search?near=' + nearVenue + '&limit=10&client_id=ITN3RTSLWS0EZ1NZ0NKWQBNJBUSE2F44N43VS5ZI0BYN0EHA&client_secret=1GDMIQM0YKKKWYAQH0WVTAYBLIJ3YXZJMDIAOHDVFXFJI4DC&v=20140806'
-     $.ajax({
-        url: queryURL,
-        method: 'GET'
-     }).then (function (data) {
+
+
+// Attempt to get city-name on click
+$(document).on('click', '.favCityButton', function () {
+  // This global variable is to be passed Foursquare AJAX call
+  nearVenue = $(this).val();
+  newForm = $('<form>');
+  newForm.append('<input class="formInput" type="text" value="What would you like to do here?">');
+  newForm.append('<button class="formSubmit">Submit</button>')
+  $('.city-venues').append(newForm);
+  return nearVenue;
+});
+
+$(document).on('click', '.formSubmit', function (event) {
+  event.preventDefault();
+  console.log(nearVenue);
+  var searchTerm = $('.formInput').val().trim();
+  console.log(searchTerm);
+  // AJAX call for venue name limit 10
+  var queryURL = 'https://api.foursquare.com/v2/venues/search?near=' + nearVenue + '&query=' + searchTerm + '&limit=10&client_id=ITN3RTSLWS0EZ1NZ0NKWQBNJBUSE2F44N43VS5ZI0BYN0EHA&client_secret=1GDMIQM0YKKKWYAQH0WVTAYBLIJ3YXZJMDIAOHDVFXFJI4DC&v=20140806'
+  $.ajax({
+    url: queryURL,
+    method: 'GET'
+  }).then(function (data) {
     console.log(data.response);
     // Here we save the name 
     var venues = data.response.venues;
-        $.each(venues, function(i,venue){
-            var queryName = venue.name;
-            // BWW this only return one venue ???
-            // $('.city-venues').html(queryName);
-            $('.city-venues').append(queryName);
-            console.log(queryName);
-            })
-        // Here we grab the id to display photo later
-        $.each(venues, function(i,venue){
-            var queryId = venue.id;
-            console.log(queryId);
-            })
-        });
-      };
-    //=====================================
+    $.each(venues, function (i, venue) {
+      var queryName = venue.name;
+      $('.city-venues').append(queryName);
+      console.log(queryName);
+    });
+  });
+  // Here we grab the id to display photo later
+  // $.each(venues, function (i, venue) {
+  //   var queryId = venue.id;
+  //   console.log(queryId);
+  // })
+});
+
+//=====================================
