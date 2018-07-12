@@ -12,11 +12,31 @@
     crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
+
   <title>Google Maps API Research</title>
 </head>
 
 <body>
+  <!-- Eric Zemp I added the begginings of the log in page  -->
+  <div id ="login-view" class="first-div">
+    <h3>Welcome to Nomad-Travlr!</h3>
+    <h4>Please sign in or register an account</h4>
+    <input type="email" placeholder="Email" id = "email-input"/>
+    <input type = "password" placeholder = "Password" id = "pass-input"/>
+    <button id ="logIn">Login</button>
+    <button id = "register">Register</button>
+   
+  
+  </div>
+  <!-- End Log-In Page -->
+  <!-- Eric Zemp Added another Div around all the other information so it could be easily hidden -->
+  <div id ="loggedIn-view" class ="main-div">
+  <!--==========================================================================================  -->
   <h1>Nomad Travelr</h1>
+  <!-- Eric Zemp Added Really Ugly Log Out Button -->
+  <button id ="logOut">Log Out</button>
+  <!-- =========================================== -->
   <div class="jumbotron">
     <div class="row">
       <div class="col-md-6">
@@ -44,6 +64,8 @@
       </div>
     </div>
   </div>
+  </div>
+  
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>

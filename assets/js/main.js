@@ -152,5 +152,55 @@ $(document).on('click', '.addButton', function (event) {
   // });
 });
 
+// =========Fire base auth code==========
+// This allows us to change what is displayed on the screen
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // Display Map If User is signed in.
 
+    document.getElementById("loggedIn-view").style.display = "block";
+    document.getElementById("login-view").style.display = "none";
 
+    var user = firebase.auth().currentUser;
+    // If we have a user we can use this to Display their name on the web page
+    if(user != null){
+
+      var email_id = user.email;
+
+    }
+
+  } else {
+    // Display Log-in Page if user isnt signed in
+
+    document.getElementById("loggedIn-view").style.display = "none";
+    document.getElementById("login-view").style.display = "block";
+
+  }
+});
+
+// =====RegisterUser=====
+$("#register").on("click",function register(){
+  var userEmail = document.getElementById("email-input").value;
+  var userPass = document.getElementById("pass-input").value;
+
+firebase.auth().createUserWithEmailAndPassword(userEmail, userPass)
+ .catch(function (error) {
+  console.log("Error : " + errorMessage);
+  })})
+  // ======LogOut Function====
+  $("#logOut").on("click",function logout(){
+    firebase.auth().signOut();
+  })
+// =====LogIn Function=====
+  $("#logIn").on("click",function login(){
+    
+    var userEmail = document.getElementById("email-input").value;
+    var userPass = document.getElementById("pass-input").value;
+  
+    firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      console.log("Error : " + errorMessage);
+    });
+  
+  })
