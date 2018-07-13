@@ -33,6 +33,11 @@ h1 {
   width: 300px;
 }
 
+.favVenue {
+  font-size: 10px;
+  color: blue;
+}
+
 /* .venueButton {
   display: block;
 } */
