@@ -160,6 +160,7 @@ $(document).on('click', '.addButton', function (event) {
   });
   // =========Fire base auth code==========
 // This allows us to change what is displayed on the screen
+
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // Display Map If User is signed in.
@@ -171,7 +172,7 @@ firebase.auth().onAuthStateChanged(function(user) {
     // If we have a user we can use this to Display their name on the web page
     if(user != null){
 
-      var email_id = user.email;
+      var email_id = user.Email;
 
     }
 
@@ -192,7 +193,13 @@ $("#register").on("click",function register(){
 firebase.auth().createUserWithEmailAndPassword(userEmail, userPass)
  .catch(function (error) {
   console.log("Error : " + errorMessage);
-  })})
+  }).then(
+  function writeUserData() {
+    firebase.database().ref('users/' + userEmail.replace(".","")).set({
+      email: userEmail
+      });
+  })
+})
   // ======LogOut Function====
   $("#logOut").on("click",function logout(){
     firebase.auth().signOut();
@@ -207,8 +214,7 @@ firebase.auth().createUserWithEmailAndPassword(userEmail, userPass)
       var errorCode = error.code;
       var errorMessage = error.message;
       console.log("Error : " + errorMessage);
-    });
-  
+    })
   })
   // ====Sign In With Google Two Methods========
   // =====Required for both=====
@@ -223,7 +229,9 @@ firebase.auth().createUserWithEmailAndPassword(userEmail, userPass)
         var errorCode = error.code;
         var errorMessage = error.message;
         console.log("Error : " + errorMessage);
-      })})
+      })
+      ;
+    })
     
       // ==========Method Two Page Redirect Haven't Tested Can't say for sure it works=======
     // 
@@ -246,3 +254,7 @@ firebase.auth().createUserWithEmailAndPassword(userEmail, userPass)
     //   var credential = error.credential;
     //   // ...
     // })}});
+    // 
+
+  // ====== Firebase Auth and Database link ========
+  
