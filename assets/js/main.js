@@ -123,3 +123,34 @@ $(document).on('click', '.formSubmit', function (event) {
 });
 
 //=====================================
+
+// Eric & Benji
+jQuery.ajaxPrefilter(function(options) {
+
+  $(document).on("click",".formSubmit",function(){
+      var searchTerm = $('.formInput').val().trim();
+
+        database.ref('cities/' + cityName).on('value', function (snapshot) {
+        var cityLat = snapshot.val().lat;
+        var cityLong = snapshot.val().long;
+    
+    var yelpURL = 'https://api.yelp.com/v3/businesses/search?latitude=' + venueLat + '&longitude=' + venueLong + '&searchTerm=' + searchTerm;
+
+  if (options.crossDomain && jQuery.support.cors) {
+      options.url = 'https://cors-anywhere.herokuapp.com/' + yelpURL;
+  } $.ajax({
+    url: options.url,
+    method: 'GET',
+    headers:{
+      authorization: "Bearer pi1sE9K0i_sVdhYgLAKtZdlcG6z5H3Sxeyhs-a-MXO055d68GMzmV8MRoCQjj_zqdIUIhlAX1zMJ3BK5Wn-n0iZe4poD9xW2QJGN3E1UfuXCd0YITiAk1DIczOhAW3Yx"
+    }
+    }).then(function (data) {
+    console.log(data);
+    var businesses = data.businesses;
+        $.each(businesses, function (i, businesses) {
+          console.log(businesses.name);
+        })
+      })
+    })
+  })
+});
