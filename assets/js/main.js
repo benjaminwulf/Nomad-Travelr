@@ -29,11 +29,14 @@ function initMap() {
     geocodeAddress(geocoder, map);
   });
   // INITIAL LOADING OF CITY NAMES WHEN PAGE IS REFRESHED
-  database.ref().on("child_added", function (childSnapshot) {
+  database.ref('cities/').on("child_added", function (childSnapshot) {
     cityName = (childSnapshot.val().cityName);
     var lat = childSnapshot.val().lat;
     var long = childSnapshot.val().long;
-    $('.favCities').append('<button class="favCityButton" value="' + cityName + '">' + cityName + '</button>');
+    var newCityDiv = $('<div>');
+    newCityDiv.addClass(cityName);
+    newCityDiv.append('<button class="favCityButton" value="' + cityName + '">' + cityName + '</button>')
+    $('.favCities').append(newCityDiv);
     var marker = new google.maps.Marker({
       map: map,
       position: {
@@ -61,9 +64,10 @@ function geocodeAddress(geocoder, resultsMap) {
           position: results[0].geometry.location
         });
         var cityNameSearch = results[0].formatted_address;
+        console.log(cityNameSearch);
         var latitude = results[0].geometry.location.lat();
         var longitude = results[0].geometry.location.lng();
-        database.ref(cityNameSearch).set({
+        database.ref('cities/' + cityNameSearch).set({
           cityName: cityNameSearch,
           lat: latitude,
           long: longitude
@@ -76,7 +80,6 @@ function geocodeAddress(geocoder, resultsMap) {
 }
 
 
-// Attempt to get city-name on click
 $(document).on('click', '.favCityButton', function () {
   // This global variable is to be passed Foursquare AJAX call
   $('.city-form').empty();
@@ -140,19 +143,22 @@ $(document).on('click', '.addButton', function (event) {
   var addedVenueName = $(this).attr("venueName");
   var addedVenueLat = $(this).attr("latitude");
   var addedVenueLng = $(this).attr("longitude");
-  database.ref(addedCity + '/venues/' + addedVenueName).set({
+  database.ref('venues').push({
+    inCity: addedCity,
     venueName: addedVenueName,
     venueLat: addedVenueLat,
     venueLng: addedVenueLng
   });
-  // database.ref(addedCity + '/venues').on("child_added", function (childSnapshot) {
-  //   var newAddedVenueDiv = $('<div>');
-  //   console.log(childSnapshot.val());
-  //   // newAddedVenueDiv.text(childSnapshot)
-  // });
 });
 
-// =========Fire base auth code==========
+
+  database.ref('venues').on("child_added", function (childSnapshot) {
+    var newAddedVenue = childSnapshot.val().venueName;
+    var cityToAddTo = childSnapshot.val().inCity;
+    console.log('.' + cityToAddTo);
+    $('.Tokyo, Japan').append('hello');
+  });
+  // =========Fire base auth code==========
 // This allows us to change what is displayed on the screen
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
