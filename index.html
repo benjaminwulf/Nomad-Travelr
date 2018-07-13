@@ -17,38 +17,63 @@
 </head>
 
 <body>
-  <div class="header">
-    <h1>Nomad Travelr
-      <i class="fa fa-suitcase" aria-hidden="true"></i>
-    </h1>
+  <!-- Eric Zemp I added the begginings of the log in page  -->
+  <div id="login-view" class="first-div">
+    <h3>Welcome to Nomad-Travlr!</h3>
+    <h4>Please sign in or register an account</h4>
+    <input type="email" placeholder="Email" id="email-input" />
+    <input type="password" placeholder="Password" id="pass-input" />
+    <button id="logIn">Login</button>
+    <button id="register">Register</button>
+    <button id="gmailSignIn">Sign In With Google</button>
+
+
   </div>
-  <div class="jumbotron">
-    <div class="row">
-      <div class="col-md-6">
-        <div id="floating-panel">
-          <input id="address" type="text" value="Search a City">
-          <input id="submit" type="button" value="Zoom to City">
-          <input id="favorites" type="button" value="Add to My Cities">
+  <!-- End Log-In Page -->
+  <!-- Eric Zemp Added another Div around all the other information so it could be easily hidden -->
+  <div id="loggedIn-view" class="main-div">
+    <!--==========================================================================================  -->
+
+    <div class="header">
+      <h1>Nomad Travelr
+        <i class="fa fa-suitcase" aria-hidden="true"></i>
+      </h1>
+      <!-- Eric Zemp Added Really Ugly Log Out Button -->
+      <button id="logOut">Log Out</button>
+      <!-- =========================================== -->
+    </div>
+
+    <div class="jumbotron">
+      <div class="row">
+        <div class="col-md-6">
+          <div id="floating-panel">
+            <input id="address" type="text" value="Search a City">
+            <input id="submit" type="button" value="Zoom to City">
+            <input id="favorites" type="button" value="Add to My Cities">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div id="map"></div>
+        </div>
+        <div class="col-md-6">
+          <div class="favCities">
+            <h4>Favorite Cities:</h4>
+          </div>
+          <h4>Ten Popular Venues: </h4>
+          <h6>
+            <i>Click on city above</i>
+          </h6>
+          <div class="city-form"></div>
+          <div class="city-venues"></div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <div id="map"></div>
-      </div>
-      <div class="col-md-6">
-        <div class="favCities">
-          <h4>Favorite Cities:</h4>
-        </div>
-        <h4>Ten Popular Venues: </h4>
-        <h6>
-          <i>Click on city above</i>
-        </h6>
-        <div class="city-form"></div>
-        <div class="city-venues"></div>
-      </div>
-    </div>
+
   </div>
+
+
 
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous"></script>
