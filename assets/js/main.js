@@ -24,10 +24,10 @@ function initMap() {
     }
   });
   var geocoder = new google.maps.Geocoder();
-
   document.getElementById('submit').addEventListener('click', function () {
     geocodeAddress(geocoder, map);
   });
+
   // INITIAL LOADING OF CITY NAMES WHEN PAGE IS REFRESHED
   database.ref('cities/').on("child_added", function (childSnapshot) {
     cityName = (childSnapshot.val().cityName);
@@ -45,6 +45,24 @@ function initMap() {
       }
     })
   });
+
+  $(document).on('click', '.favCityButton', function () {
+    cityName = $(this).val();
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode({
+      'address': cityName
+    }, function (results, status) {
+      if (status === 'OK') {
+        map.setCenter(results[0].geometry.location);
+        map.setZoom(8);
+      }
+      // var marker = new google.maps.Marker({
+      //   map: map,
+      //   position: results[0].geometry.location
+      // });
+    });
+  });
+
   database.ref('venues').on("child_added", function (childSnapshot) {
     var newAddedVenue = childSnapshot.val().venueName;
     var cityToAddTo = childSnapshot.val().inCity.split(",")[0];
@@ -84,7 +102,7 @@ function geocodeAddress(geocoder, resultsMap) {
   });
 }
 
-
+//When a "my cities" button is clicked
 $(document).on('click', '.favCityButton', function () {
   // This global variable is to be passed Foursquare AJAX call
   $('.city-form').empty();
@@ -245,5 +263,4 @@ $("#gmailSignIn").on("click", function googleSignIn() {
 //   var credential = error.credential;
 //   // ...
 // })}});
-// 
-
+//
