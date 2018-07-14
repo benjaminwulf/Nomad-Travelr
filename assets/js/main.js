@@ -29,11 +29,14 @@ function initMap() {
     geocodeAddress(geocoder, map);
   });
   // INITIAL LOADING OF CITY NAMES WHEN PAGE IS REFRESHED
-  database.ref().on("child_added", function (childSnapshot) {
+  database.ref('cities/').on("child_added", function (childSnapshot) {
     cityName = (childSnapshot.val().cityName);
     var lat = childSnapshot.val().lat;
     var long = childSnapshot.val().long;
-    $('.favCities').append('<button class="favCityButton" value="' + cityName + '">' + cityName + '</button>');
+    var newCityDiv = $('<div>');
+    newCityDiv.addClass(cityName);
+    newCityDiv.append('<button class="favCityButton" value="' + cityName + '">' + cityName + '</button>')
+    $('.favCities').append(newCityDiv);
     var marker = new google.maps.Marker({
       map: map,
       position: {
@@ -61,9 +64,10 @@ function geocodeAddress(geocoder, resultsMap) {
           position: results[0].geometry.location
         });
         var cityNameSearch = results[0].formatted_address;
+        console.log(cityNameSearch);
         var latitude = results[0].geometry.location.lat();
         var longitude = results[0].geometry.location.lng();
-        database.ref(cityNameSearch).set({
+        database.ref('cities/' + cityNameSearch).set({
           cityName: cityNameSearch,
           lat: latitude,
           long: longitude
@@ -76,7 +80,6 @@ function geocodeAddress(geocoder, resultsMap) {
 }
 
 
-// Attempt to get city-name on click
 $(document).on('click', '.favCityButton', function () {
   // This global variable is to be passed Foursquare AJAX call
   $('.city-form').empty();
@@ -103,23 +106,35 @@ $(document).on('click', '.formSubmit', function (event) {
     // Here we save the name 
     var venues = data.response.venues;
     $.each(venues, function (i, venue) {
+      var newButtonsDiv = $('<div class=newVenueButtons>')
       var queryName = venue.name;
       var lat = venue.location.lat;
       var lng = venue.location.lng;
       var newVenueButton = $('<button class="venueButton">' + queryName + '</button>');
       newVenueButton.attr({
+        venueName: queryName,
         latitude: lat,
         longitude: lng
       });
-      $('.city-venues').append(newVenueButton);
+      var newAddButton = $('<button class="addButton">+Add</button>');
+      newAddButton.attr({
+        cityName: nearVenue,
+        venueName: queryName,
+        latitude: lat,
+        longitude: lng
+      });
+      var newUpVoteButton = $('<button class="upVoteButton"><i class="fas fa-thumbs-up"></i></button>');
+      newUpVoteButton.attr({
+        cityName: nearVenue,
+        venueName: queryName,
+        latitude: lat,
+        longitude: lng
+      });
+      newButtonsDiv.append(newVenueButton, newAddButton, newUpVoteButton);
+      $('.city-venues').append($(newButtonsDiv));
       console.log(queryName);
     });
   });
-  // Here we grab the id to display photo later
-  // $.each(venues, function (i, venue) {
-  //   var queryId = venue.id;
-  //   console.log(queryId);
-  // })
 });
 
 //=====================================
@@ -128,13 +143,13 @@ $(document).on('click', '.formSubmit', function (event) {
 jQuery.ajaxPrefilter(function(options) {
 
   $(document).on("click",".formSubmit",function(){
-      var searchTerm = $('.formInput').val().trim();
+      // var searchTerm = $('.formInput').val().trim();
 
         database.ref('cities/' + cityName).on('value', function (snapshot) {
-        var cityLat = snapshot.val().lat;
-        var cityLong = snapshot.val().long;
+        var venueLat = snapshot.val().lat;
+        var venueLong = snapshot.val().long;
     
-    var yelpURL = 'https://api.yelp.com/v3/businesses/search?latitude=' + venueLat + '&longitude=' + venueLong + '&searchTerm=' + searchTerm;
+    var yelpURL = 'https://api.yelp.com/v3/businesses/search?latitude=' + venueLat + '&longitude=' + venueLong;
 
   if (options.crossDomain && jQuery.support.cors) {
       options.url = 'https://cors-anywhere.herokuapp.com/' + yelpURL;
@@ -154,3 +169,26 @@ jQuery.ajaxPrefilter(function(options) {
     })
   })
 });
+
+$(document).on('click', '.addButton', function (event) {
+  event.preventDefault();
+  var addedCity = $(this).attr("cityName")
+  var addedVenueName = $(this).attr("venueName");
+  var addedVenueLat = $(this).attr("latitude");
+  var addedVenueLng = $(this).attr("longitude");
+  database.ref('venues').push({
+    inCity: addedCity,
+    venueName: addedVenueName,
+    venueLat: addedVenueLat,
+    venueLng: addedVenueLng
+  });
+});
+
+
+  // database.ref('venues').on("child_added", function (childSnapshot) {
+  //   var newAddedVenue = childSnapshot.val().venueName;
+  //   var cityToAddTo = childSnapshot.val().inCity;
+  //   console.log('.' + cityToAddTo);
+  //   $('.Tokyo, Japan').append('hello');
+  // });
+
