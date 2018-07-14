@@ -36,6 +36,8 @@ function initMap() {
     var newCityDiv = $('<div>');
     newCityDiv.addClass(cityName.split(",")[0]);
     newCityDiv.append('<button class="favCityButton" value="' + cityName + '">' + cityName + '</button>')
+    var newDelBtn = $('<button class="deleteCity" value="' + cityName + '">x</button>')
+    newCityDiv.append(newDelBtn);
     $('.favCities').append(newCityDiv);
     var marker = new google.maps.Marker({
       map: map,
@@ -56,10 +58,6 @@ function initMap() {
         map.setCenter(results[0].geometry.location);
         map.setZoom(8);
       }
-      // var marker = new google.maps.Marker({
-      //   map: map,
-      //   position: results[0].geometry.location
-      // });
     });
   });
 
@@ -174,6 +172,13 @@ $(document).on('click', '.addButton', function (event) {
     venueLng: addedVenueLng
   });
 });
+
+$(document).on('click', '.deleteCity', function (event) {
+  var divToDelete = $(this).val();
+  $('.' + divToDelete.split(",")[0]).remove();
+  database.ref('cities/' + divToDelete).remove();
+});
+
 
 
 // =========Fire base auth code==========

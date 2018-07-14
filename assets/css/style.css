@@ -24,7 +24,7 @@ h1 {
 }
 
 .favCityButton {
-  display: block;
+  /* display: block; */
   border: none;
   background-color: transparent;
 }
@@ -37,6 +37,11 @@ h1 {
   font-size: 10px;
   color: blue;
 }
+
+.deleteCity {
+  font-size: 10px;
+}
+
 
 /* .venueButton {
   display: block;
