@@ -2,8 +2,26 @@ body {
   font-family: 'Merriweather', serif;
 }
 
+.container {
+  width: 80%;
+}
+
+#submit,
+#favorites {
+  background-color: #36558f;
+  font-family: 'Merriweather', serif;
+}
+
+#logOut {
+  display: inline;
+  background-color: #fff;
+  color: #36558f;
+  margin-bottom: 20px;
+  font-size: 12px;
+}
+
 .header {
-  background-color: rgb(206, 153, 54);
+  background-color: #36558f;
   height: 80px;
 }
 
@@ -20,13 +38,24 @@ margin: 0px;
 
 h1 {
   text-align: center;
+  color: #fff;
   font-family: 'Yeseva One', cursive;
+  margin: auto 0;
+  display: inline;
+}
+
+h4 {
+  font-size: 22px;
+  background-color: #36558f;
+  color: #fff;
+  padding: 10px;
 }
 
 .favCityButton {
-  /* display: block; */
-  border: none;
-  background-color: transparent;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: capitalize;
+  font-family: 'Merriweather', serif;
 }
 
 .formInput {
@@ -34,14 +63,24 @@ h1 {
 }
 
 .favVenue {
-  font-size: 10px;
-  color: blue;
+  font-size: 14px;
+  color: #2fa599;
+  margin-left: 50px;
 }
 
 .deleteCity {
   font-size: 10px;
 }
 
+.formSubmit {
+  background-color: #2fa599;
+}
+
+.addButton {
+  background-color: #2fa599;
+  color: #fff;
+  font-family: 'Merriweather', serif;
+ }
 
 /* .venueButton {
   display: block;
