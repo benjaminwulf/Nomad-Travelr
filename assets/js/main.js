@@ -35,7 +35,7 @@ function initMap() {
     var long = childSnapshot.val().long;
     var newCityDiv = $('<div>');
     newCityDiv.addClass(cityName.split(",")[0]);
-    newCityDiv.append('<button class="favCityButton" value="' + cityName + '">' + cityName + '</button>')
+    newCityDiv.append('<button class="favCityButton btn-flat" value="' + cityName + '">' + cityName + '</button>')
     var newDelBtn = $('<button class="deleteCity" value="' + cityName + '">x</button>')
     newCityDiv.append(newDelBtn);
     $('.favCities').append(newCityDiv);
@@ -107,8 +107,8 @@ $(document).on('click', '.favCityButton', function () {
   $('.city-venues').empty();
   cityName = $(this).val();
   newForm = $('<form>');
-  newForm.append('<input class="formInput" type="text" value="What would you like to do here?">');
-  newForm.append('<button class="formSubmit">Submit</button>')
+  newForm.append('<input class="formInput" type="text" placeholder="What would you like to do here?">');
+  newForm.append('<button class="formSubmit btn">Submit</button>')
   $('.city-form').append(newForm);
   return cityName;
 });
@@ -131,27 +131,27 @@ $(document).on('click', '.formSubmit', function (event) {
       var queryName = venue.name;
       var lat = venue.location.lat;
       var lng = venue.location.lng;
-      var newVenueButton = $('<button class="venueButton">' + queryName + '</button>');
+      var newVenueButton = $('<button class="venueButton btn-flat">' + queryName + '</button>');
       newVenueButton.attr({
         venueName: queryName,
         latitude: lat,
         longitude: lng
       });
-      var newAddButton = $('<button class="addButton">+Add</button>');
+      var newAddButton = $('<button class="addButton">+</button>');
       newAddButton.attr({
         cityName: cityName,
         venueName: queryName,
         latitude: lat,
         longitude: lng
       });
-      var newUpVoteButton = $('<button class="upVoteButton"><i class="fas fa-thumbs-up"></i></button>');
-      newUpVoteButton.attr({
-        cityName: cityName,
-        venueName: queryName,
-        latitude: lat,
-        longitude: lng
-      });
-      newButtonsDiv.append(newVenueButton, newAddButton, newUpVoteButton);
+      // var newUpVoteButton = $('<button class="upVoteButton"><i class="fas fa-thumbs-up"></i></button>');
+      // newUpVoteButton.attr({
+      //   cityName: cityName,
+      //   venueName: queryName,
+      //   latitude: lat,
+      //   longitude: lng
+      // });
+      newButtonsDiv.append(newVenueButton, newAddButton); // newUpVoteButton);
       $('.city-venues').append($(newButtonsDiv));
       console.log(queryName);
     });
